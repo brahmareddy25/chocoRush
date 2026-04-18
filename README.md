@@ -41,6 +41,36 @@ backend/db.sqlite3    Local database after migrations
 
 The Vite dev server proxies `/api/*` to `http://127.0.0.1:8000`.
 
+## Frontend Deploy
+
+The frontend API client reads `VITE_API_BASE_URL` from Vite env files.
+
+- Local development: leave `VITE_API_BASE_URL` empty in `.env` so Vite can proxy `/api/*` to `http://127.0.0.1:8000`
+- Production build: `.env.production` is set to `https://chocorush-backend.onrender.com`, so deployed UI builds will call that backend directly
+
+### Frontend Deploy Steps
+
+1. Keep the backend deployed at `https://chocorush-backend.onrender.com`
+2. In your frontend hosting service, build the React app with `npm run build`
+3. If your host supports env vars, set `VITE_API_BASE_URL=https://chocorush-backend.onrender.com`
+4. Publish the `dist/` folder, or let the host serve the Vite build output automatically
+5. In Render backend env vars, set `DJANGO_ALLOWED_HOSTS` to include your backend host
+6. In Render backend env vars, set `DJANGO_CSRF_TRUSTED_ORIGINS` to include your frontend URL, for example `https://your-frontend-domain.com`
+7. Redeploy the backend after updating trusted origins
+
+### Example
+
+- Backend URL: `https://chocorush-backend.onrender.com`
+- Frontend env: `VITE_API_BASE_URL=https://chocorush-backend.onrender.com`
+- Backend trusted origin: `DJANGO_CSRF_TRUSTED_ORIGINS=https://your-frontend-domain.com`
+
+### Local UI With Deployed Backend
+
+- `npm run dev` expects a local Django server at `127.0.0.1:8000`
+- If you only want to run the React UI locally against the deployed Render backend, use `npm run dev:render`
+- `npm run dev:render` loads `.env.render`, so the UI calls `https://chocorush-backend.onrender.com` instead of the local Vite proxy
+- Or create `.env.local` with `VITE_API_BASE_URL=https://chocorush-backend.onrender.com` if you want plain `npm run dev` to use Render too
+
 The Django backend now auto-loads env vars from:
 
 - `.env` in the project root

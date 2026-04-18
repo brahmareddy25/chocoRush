@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1 --port 5173 --strictPort",
+    "dev:render": "vite --mode render --host 127.0.0.1 --port 5173 --strictPort",
     "dev:backend": "python backend/manage.py migrate --noinput && python backend/manage.py runserver 127.0.0.1:8000",
     "build": "vite build",
     "preview": "vite preview --host 127.0.0.1 --port 4173 --strictPort",
