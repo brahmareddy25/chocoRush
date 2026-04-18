@@ -1,4 +1,5 @@
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import Header from './components/Header.jsx';
 import CartPanel from './components/CartPanel.jsx';
 import AdminRoute from './components/AdminRoute.jsx';
@@ -16,7 +17,26 @@ import { useAuth } from './context/AuthContext.jsx';
 export default function App() {
   const { booting } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
   const isAdminRoute = location.pathname.startsWith('/admin');
+
+  useEffect(() => {
+    if (location.pathname !== '/') {
+      return;
+    }
+
+    const params = new URLSearchParams(location.search);
+    const redirectParam = params.get('redirect');
+    const storedRedirect = window.sessionStorage.getItem('chocorush_redirect_path');
+    const redirectPath = redirectParam || storedRedirect;
+
+    if (!redirectPath || !redirectPath.startsWith('/')) {
+      return;
+    }
+
+    window.sessionStorage.removeItem('chocorush_redirect_path');
+    navigate(redirectPath, { replace: true });
+  }, [location.pathname, location.search, navigate]);
 
   if (booting) {
     return (

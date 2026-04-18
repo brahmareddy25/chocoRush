@@ -1161,6 +1161,10 @@ img {
 }
 
 @media (max-width: 640px) {
+  .profile-page {
+    padding: 24px 14px 88px;
+  }
+
   .site-header {
     padding: 12px 14px;
   }
@@ -1216,11 +1220,42 @@ img {
     flex-direction: column;
   }
 
+  .profile-shell {
+    gap: 16px;
+  }
+
+  .admin-columns {
+    gap: 16px;
+  }
+
   .admin-list-card,
   .admin-order-card,
   .profile-form,
   .admin-panel {
     padding: 18px;
+  }
+
+  .profile-form {
+    margin-top: 16px;
+  }
+
+  .profile-form label {
+    gap: 6px;
+  }
+
+  .admin-list-card {
+    gap: 14px;
+  }
+
+  .admin-list-card .inline-actions,
+  .profile-form .inline-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .admin-list-card .inline-actions > *,
+  .profile-form .inline-actions > * {
+    width: 100%;
   }
 
   .admin-action-btn,
