@@ -56,11 +56,17 @@ The frontend API client reads `VITE_API_BASE_URL` from Vite env files.
 2. In your frontend hosting service, build the React app with `npm run build`
 3. If your host supports env vars, set `VITE_API_BASE_URL=https://chocorush-backend.onrender.com`
 4. Publish the `dist/` folder, or let the host serve the Vite build output automatically
-5. In Render backend env vars, set `DJANGO_ALLOWED_HOSTS` to include your backend host
-6. In Render backend env vars, set `RENDER_FRONTEND_URL=https://your-frontend-domain.com`
-7. Optionally set `DJANGO_CORS_ALLOWED_ORIGINS=https://your-frontend-domain.com` if you want explicit CORS control beyond the default
-8. If your frontend submits forms or authenticated requests to Django, also set `DJANGO_CSRF_TRUSTED_ORIGINS=https://your-frontend-domain.com`
-9. Redeploy the backend after updating origins
+5. If the frontend is deployed as a Render Static Site and uses React Router, add a rewrite rule so direct visits like `/login` do not 404:
+   - Source: `/*`
+   - Destination: `/index.html`
+   - Action: `Rewrite`
+6. In Render backend env vars, set `DJANGO_ALLOWED_HOSTS` to include your backend host
+7. In Render backend env vars, set `RENDER_FRONTEND_URL=https://your-frontend-domain.com`
+8. Optionally set `DJANGO_CORS_ALLOWED_ORIGINS=https://your-frontend-domain.com` if you want explicit CORS control beyond the default
+9. If your frontend submits forms or authenticated requests to Django, also set `DJANGO_CSRF_TRUSTED_ORIGINS=https://your-frontend-domain.com`
+10. Redeploy the backend after updating origins
+
+You can also codify the frontend rewrite in [render.yaml](/e:/choco%20web%20page/render.yaml:1) if you manage the site with a Render Blueprint.
 
 ### Example
 
