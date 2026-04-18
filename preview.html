@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ChocoRush UI Preview</title>
+    <style>
+      :root {
+        --accent: #f25555;
+        --mint: #13a58f;
+        --ink: #202124;
+        --muted: #667085;
+        --line: #e4e7ec;
+        --rose: #fff0f2;
+        font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: var(--ink);
+        background: #f6f7f9;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+      }
+
+      button,
+      input,
+      select {
+        font: inherit;
+      }
+
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 14px clamp(16px, 5vw, 64px);
+        background: rgba(255, 255, 255, 0.94);
+        border-bottom: 1px solid var(--line);
+        backdrop-filter: blur(14px);
+      }
+
+      .brand,
+      .actions,
+      .search-row,
+      .card-bottom,
+      .cart-row,
+      .qty {
+        display: flex;
+        align-items: center;
+      }
+
+      .brand {
+        gap: 10px;
+        font-weight: 900;
+      }
+
+      .brand-mark {
+        display: grid;
+        width: 42px;
+        height: 42px;
+        place-items: center;
+        border-radius: 8px;
+        color: white;
+        background: linear-gradient(135deg, var(--accent), var(--mint));
+      }
+
+      .brand small {
+        display: block;
+        color: var(--muted);
+        font-size: 0.78rem;
+        font-weight: 700;
+      }
+
+      .actions {
+        gap: 10px;
+      }
+
+      .pill,
+      .cart-btn,
+      .add-btn,
+      .category button {
+        border: 0;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 900;
+      }
+
+      .pill {
+        padding: 10px 14px;
+        color: #fff;
+        background: var(--accent);
+      }
+
+      .cart-btn {
+        padding: 10px 14px;
+        color: #fff;
+        background: var(--ink);
+      }
+
+      .hero {
+        min-height: 380px;
+        display: flex;
+        align-items: flex-end;
+        padding: 72px clamp(16px, 5vw, 64px) 34px;
+        color: white;
+        background:
+          linear-gradient(90deg, rgba(12, 14, 18, 0.86), rgba(12, 14, 18, 0.36)),
+          url("https://images.unsplash.com/photo-1511381939415-e44015466834?auto=format&fit=crop&w=1800&q=80")
+            center/cover;
+      }
+
+      .hero div {
+        max-width: 760px;
+      }
+
+      .eyebrow {
+        margin: 0 0 8px;
+        color: var(--muted);
+        font-size: 0.82rem;
+        font-weight: 900;
+        letter-spacing: 0;
+        text-transform: uppercase;
+      }
+
+      .hero .eyebrow {
+        color: rgba(255, 255, 255, 0.78);
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(2.2rem, 5vw, 4.7rem);
+        line-height: 1.02;
+      }
+
+      .hero p:last-child {
+        max-width: 620px;
+        color: rgba(255, 255, 255, 0.86);
+        font-size: 1.08rem;
+        line-height: 1.7;
+      }
+
+      main {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 360px;
+        gap: 24px;
+        padding: 34px clamp(16px, 5vw, 64px) 80px;
+      }
+
+      .title {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 18px;
+        margin-bottom: 18px;
+      }
+
+      h2 {
+        margin: 4px 0 0;
+        font-size: clamp(1.8rem, 4vw, 3rem);
+        line-height: 1.08;
+      }
+
+      .search-row {
+        display: grid;
+        grid-template-columns: 1fr 210px;
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+
+      .search-row input,
+      .search-row select {
+        width: 100%;
+        min-height: 54px;
+        padding: 0 16px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+        outline: 0;
+      }
+
+      .category {
+        display: flex;
+        gap: 10px;
+        margin: 16px 0 26px;
+        overflow-x: auto;
+      }
+
+      .category button {
+        flex: 0 0 auto;
+        padding: 11px 18px;
+        color: var(--muted);
+        background: #fff;
+        border: 1px solid var(--line);
+      }
+
+      .category button.active {
+        color: white;
+        background: var(--mint);
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+        gap: 20px;
+      }
+
+      .card,
+      .cart {
+        overflow: hidden;
+        background: white;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        box-shadow: 0 12px 35px rgba(31, 41, 55, 0.08);
+      }
+
+      .card img {
+        width: 100%;
+        aspect-ratio: 1.22 / 1;
+        object-fit: cover;
+      }
+
+      .copy {
+        padding: 16px;
+      }
+
+      .copy h3 {
+        min-height: 48px;
+        margin: 5px 0 16px;
+        font-size: 1.1rem;
+      }
+
+      .category-label {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.82rem;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      .card-bottom {
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .add-btn {
+        padding: 9px 12px;
+        color: #d8364a;
+        background: var(--rose);
+        border: 1px solid #ffd4da;
+      }
+
+      .cart {
+        position: sticky;
+        top: 92px;
+        padding: 20px;
+        align-self: start;
+      }
+
+      .cart h2 {
+        font-size: 1.5rem;
+      }
+
+      .cart-row {
+        justify-content: space-between;
+        gap: 12px;
+        padding: 14px 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .cart-row p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .qty {
+        gap: 8px;
+      }
+
+      .qty button {
+        width: 28px;
+        height: 28px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: white;
+        cursor: pointer;
+      }
+
+      .total {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 18px;
+        font-size: 1.2rem;
+      }
+
+      .checkout {
+        width: 100%;
+        margin-top: 14px;
+        padding: 13px;
+        border: 0;
+        border-radius: 8px;
+        color: white;
+        background: var(--accent);
+        cursor: pointer;
+        font-weight: 900;
+      }
+
+      @media (max-width: 920px) {
+        main {
+          grid-template-columns: 1fr;
+        }
+
+        .cart {
+          position: static;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .brand small,
+        .pill {
+          display: none;
+        }
+
+        .search-row {
+          grid-template-columns: 1fr;
+        }
+
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="brand">
+        <span class="brand-mark">C</span>
+        <span>ChocoRush <small>Chocolate in minutes</small></span>
+      </div>
+      <div class="actions">
+        <button class="pill">Login</button>
+        <button class="cart-btn">Cart <span id="cart-count">0</span></button>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Fresh drops near you</p>
+        <h1>Craft chocolate, midnight cravings, and gift boxes at rush speed.</h1>
+        <p>Curated bars, truffles, imported picks, and premium bites from trusted makers.</p>
+      </div>
+    </section>
+
+    <main>
+      <section>
+        <div class="title">
+          <div>
+            <p class="eyebrow">Chocolate menu</p>
+            <h2>Top picks for today</h2>
+          </div>
+          <strong id="choice-count">8 choices</strong>
+        </div>
+
+        <div class="search-row">
+          <input id="search" placeholder="Search dark truffles, pralines, wafers..." />
+          <select id="sort">
+            <option value="recommended">Recommended</option>
+            <option value="rating">Top rated</option>
+            <option value="low">Price: Low to high</option>
+            <option value="high">Price: High to low</option>
+          </select>
+        </div>
+
+        <div class="category" id="categories"></div>
+        <div class="grid" id="products"></div>
+      </section>
+
+      <aside class="cart">
+        <p class="eyebrow">Your cart</p>
+        <h2>Hungry cart</h2>
+        <div id="cart-items"></div>
+        <div class="total">
+          <span>Total</span>
+          <strong id="total">₹0</strong>
+        </div>
+        <button class="checkout">Checkout preview</button>
+      </aside>
+    </main>
+
+    <script>
+      const products = [
+        ["dark-velvet-70", "Velvet 70% Dark Bar", 249, "Dark", 4.8, "https://images.unsplash.com/photo-1606312619070-d48b4c652a52?auto=format&fit=crop&w=900&q=80"],
+        ["milk-cloud-bites", "Milk Cloud Bites", 179, "Milk", 4.5, "https://images.unsplash.com/photo-1548907040-4baa42d10919?auto=format&fit=crop&w=900&q=80"],
+        ["premium-gold-truffles", "Gold Dust Truffle Box", 699, "Premium", 4.9, "https://images.unsplash.com/photo-1526081347589-7fa3cb41b4b2?auto=format&fit=crop&w=900&q=80"],
+        ["imported-swiss-praline", "Swiss Hazelnut Praline", 549, "Imported", 4.7, "https://images.unsplash.com/photo-1599599810694-b5b37304c041?auto=format&fit=crop&w=900&q=80"],
+        ["dark-almond-snap", "Dark Almond Snap", 299, "Dark", 4.6, "https://images.unsplash.com/photo-1604514813560-1e4f5726db65?auto=format&fit=crop&w=900&q=80"],
+        ["milk-caramel-squares", "Caramel Milk Squares", 229, "Milk", 4.4, "https://images.unsplash.com/photo-1481391032119-d89fee407e44?auto=format&fit=crop&w=900&q=80"],
+        ["premium-berry-bark", "Berry Pistachio Bark", 449, "Premium", 4.7, "https://images.unsplash.com/photo-1582176604856-e824b4736522?auto=format&fit=crop&w=900&q=80"],
+        ["imported-belgian-box", "Belgian Assorted Box", 899, "Imported", 4.9, "https://images.unsplash.com/photo-1549007994-cb92caebd54b?auto=format&fit=crop&w=900&q=80"]
+      ].map(([id, name, price, category, rating, image]) => ({ id, name, price, category, rating, image }));
+
+      const cart = new Map();
+      let activeCategory = "All";
+
+      const money = (value) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(value);
+
+      function renderCategories() {
+        document.getElementById("categories").innerHTML = ["All", "Dark", "Milk", "Premium", "Imported"]
+          .map((category) => `<button class="${category === activeCategory ? "active" : ""}" onclick="setCategory('${category}')">${category}</button>`)
+          .join("");
+      }
+
+      function setCategory(category) {
+        activeCategory = category;
+        renderCategories();
+        renderProducts();
+      }
+
+      function renderProducts() {
+        const search = document.getElementById("search").value.toLowerCase();
+        const sort = document.getElementById("sort").value;
+        let visible = products.filter((item) => {
+          const byCategory = activeCategory === "All" || item.category === activeCategory;
+          const bySearch = item.name.toLowerCase().includes(search) || item.category.toLowerCase().includes(search);
+          return byCategory && bySearch;
+        });
+
+        if (sort === "rating") visible.sort((a, b) => b.rating - a.rating);
+        if (sort === "low") visible.sort((a, b) => a.price - b.price);
+        if (sort === "high") visible.sort((a, b) => b.price - a.price);
+
+        document.getElementById("choice-count").textContent = `${visible.length} choices`;
+        document.getElementById("products").innerHTML = visible
+          .map(
+            (item) => `
+              <article class="card">
+                <img src="${item.image}" alt="${item.name}">
+                <div class="copy">
+                  <p class="category-label">${item.category} • ★ ${item.rating}</p>
+                  <h3>${item.name}</h3>
+                  <div class="card-bottom">
+                    <strong>${money(item.price)}</strong>
+                    <button class="add-btn" onclick="addToCart('${item.id}')">Add</button>
+                  </div>
+                </div>
+              </article>
+            `
+          )
+          .join("");
+      }
+
+      function addToCart(id) {
+        cart.set(id, (cart.get(id) || 0) + 1);
+        renderCart();
+      }
+
+      function changeQty(id, delta) {
+        const next = (cart.get(id) || 0) + delta;
+        if (next <= 0) cart.delete(id);
+        else cart.set(id, next);
+        renderCart();
+      }
+
+      function renderCart() {
+        let count = 0;
+        let total = 0;
+        const rows = [...cart.entries()].map(([id, qty]) => {
+          const item = products.find((product) => product.id === id);
+          count += qty;
+          total += item.price * qty;
+          return `
+            <div class="cart-row">
+              <div>
+                <strong>${item.name}</strong>
+                <p>${money(item.price)}</p>
+              </div>
+              <div class="qty">
+                <button onclick="changeQty('${id}', -1)">-</button>
+                <span>${qty}</span>
+                <button onclick="changeQty('${id}', 1)">+</button>
+              </div>
+            </div>
+          `;
+        });
+
+        document.getElementById("cart-count").textContent = count;
+        document.getElementById("cart-items").innerHTML = rows.join("") || "<p>Add a chocolate and the checkout magic starts here.</p>";
+        document.getElementById("total").textContent = money(total);
+      }
+
+      document.getElementById("search").addEventListener("input", renderProducts);
+      document.getElementById("sort").addEventListener("change", renderProducts);
+      renderCategories();
+      renderProducts();
+      renderCart();
+    </script>
+  </body>
+</html>

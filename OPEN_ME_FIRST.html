@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ChocoRush Preview</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: #f6f7f9;
+        color: #202124;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 48px;
+        background: #ffffff;
+        border-bottom: 1px solid #e4e7ec;
+      }
+
+      .brand {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        font-size: 22px;
+        font-weight: 900;
+      }
+
+      .mark {
+        display: grid;
+        width: 44px;
+        height: 44px;
+        place-items: center;
+        border-radius: 8px;
+        color: #ffffff;
+        background: #f25555;
+      }
+
+      .cart {
+        padding: 12px 18px;
+        border-radius: 8px;
+        color: #ffffff;
+        background: #202124;
+        font-weight: 800;
+      }
+
+      .hero {
+        min-height: 360px;
+        display: flex;
+        align-items: end;
+        padding: 60px 48px 40px;
+        color: #ffffff;
+        background:
+          linear-gradient(90deg, rgba(20, 20, 20, 0.9), rgba(20, 20, 20, 0.35)),
+          linear-gradient(135deg, #f25555, #13a58f);
+      }
+
+      .hero h1 {
+        max-width: 780px;
+        margin: 0;
+        font-size: 64px;
+        line-height: 1;
+      }
+
+      .hero p {
+        max-width: 620px;
+        font-size: 19px;
+        line-height: 1.6;
+      }
+
+      main {
+        display: grid;
+        grid-template-columns: 1fr 320px;
+        gap: 24px;
+        padding: 36px 48px;
+      }
+
+      .toolbar {
+        display: grid;
+        grid-template-columns: 1fr 220px;
+        gap: 12px;
+        margin: 22px 0;
+      }
+
+      input,
+      select {
+        min-height: 52px;
+        padding: 0 16px;
+        border: 1px solid #e4e7ec;
+        border-radius: 8px;
+      }
+
+      .chips {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 24px;
+      }
+
+      .chips span {
+        padding: 11px 18px;
+        border-radius: 8px;
+        background: #ffffff;
+        border: 1px solid #e4e7ec;
+        font-weight: 800;
+      }
+
+      .chips .active {
+        color: #ffffff;
+        background: #13a58f;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
+      }
+
+      .card,
+      aside {
+        background: #ffffff;
+        border: 1px solid #e4e7ec;
+        border-radius: 8px;
+        box-shadow: 0 12px 35px rgba(31, 41, 55, 0.08);
+      }
+
+      .photo {
+        height: 180px;
+        border-radius: 8px 8px 0 0;
+        background:
+          radial-gradient(circle at 35% 35%, #f7c4c4, transparent 26%),
+          radial-gradient(circle at 70% 35%, #8b4a5a, transparent 26%),
+          linear-gradient(135deg, #3b2622, #f25555);
+      }
+
+      .card:nth-child(2) .photo {
+        background:
+          radial-gradient(circle at 30% 30%, #ffffff, transparent 24%),
+          radial-gradient(circle at 72% 38%, #13a58f, transparent 24%),
+          linear-gradient(135deg, #8b4a5a, #f2c6a0);
+      }
+
+      .card:nth-child(3) .photo {
+        background:
+          radial-gradient(circle at 25% 35%, #f25555, transparent 24%),
+          radial-gradient(circle at 70% 38%, #ffd166, transparent 22%),
+          linear-gradient(135deg, #202124, #13a58f);
+      }
+
+      .card-content {
+        padding: 16px;
+      }
+
+      .label {
+        color: #667085;
+        font-size: 13px;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      .row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+      }
+
+      button {
+        padding: 10px 14px;
+        border: 0;
+        border-radius: 8px;
+        color: #d8364a;
+        background: #fff0f2;
+        font-weight: 900;
+      }
+
+      aside {
+        position: sticky;
+        top: 92px;
+        padding: 20px;
+        align-self: start;
+      }
+
+      .total {
+        margin-top: 22px;
+        padding-top: 18px;
+        border-top: 1px solid #e4e7ec;
+        font-size: 20px;
+        font-weight: 900;
+      }
+
+      @media (max-width: 900px) {
+        header,
+        .hero,
+        main {
+          padding-left: 18px;
+          padding-right: 18px;
+        }
+
+        .hero h1 {
+          font-size: 42px;
+        }
+
+        main,
+        .toolbar {
+          grid-template-columns: 1fr;
+        }
+
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="brand">
+        <div class="mark">C</div>
+        ChocoRush
+      </div>
+      <div class="cart">Cart 3</div>
+    </header>
+
+    <section class="hero">
+      <div>
+        <h1>Chocolate shopping UI is working.</h1>
+        <p>Swiggy-style cards, search controls, category chips, and a sticky cart layout are visible in this no-setup preview.</p>
+      </div>
+    </section>
+
+    <main>
+      <section>
+        <h2>Top picks for today</h2>
+        <div class="toolbar">
+          <input value="Search chocolate..." />
+          <select>
+            <option>Recommended</option>
+          </select>
+        </div>
+        <div class="chips">
+          <span class="active">All</span>
+          <span>Dark</span>
+          <span>Milk</span>
+          <span>Premium</span>
+          <span>Imported</span>
+        </div>
+        <div class="grid">
+          <article class="card">
+            <div class="photo"></div>
+            <div class="card-content">
+              <p class="label">Dark - 4.8 rating</p>
+              <h3>Velvet 70% Dark Bar</h3>
+              <div class="row">
+                <strong>Rs 249</strong>
+                <button>Add</button>
+              </div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="photo"></div>
+            <div class="card-content">
+              <p class="label">Milk - 4.5 rating</p>
+              <h3>Milk Cloud Bites</h3>
+              <div class="row">
+                <strong>Rs 179</strong>
+                <button>Add</button>
+              </div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="photo"></div>
+            <div class="card-content">
+              <p class="label">Premium - 4.9 rating</p>
+              <h3>Gold Dust Truffle Box</h3>
+              <div class="row">
+                <strong>Rs 699</strong>
+                <button>Add</button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <aside>
+        <h2>Your cart</h2>
+        <p>Velvet 70% Dark Bar x 1</p>
+        <p>Milk Cloud Bites x 2</p>
+        <div class="total">Total: Rs 607</div>
+      </aside>
+    </main>
+  </body>
+</html>
