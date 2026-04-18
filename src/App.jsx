@@ -19,6 +19,7 @@ export default function App() {
   const location = useLocation();
   const navigate = useNavigate();
   const isAdminRoute = location.pathname.startsWith('/admin');
+  const fallbackPath = isAdminRoute ? '/admin/login' : '/login';
 
   useEffect(() => {
     if (location.pathname !== '/') {
@@ -101,7 +102,7 @@ export default function App() {
             </AdminRoute>
           }
         />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<Navigate to={fallbackPath} replace />} />
       </Routes>
       {!isAdminRoute && <CartPanel />}
     </>

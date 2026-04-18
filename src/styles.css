@@ -759,6 +759,11 @@ img {
   gap: 22px;
 }
 
+.profile-shell {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+}
+
 .profile-form,
 .admin-panel,
 .stat-card,
@@ -856,6 +861,17 @@ img {
 
 .admin-columns > * {
   flex: 1 1 0;
+}
+
+.profile-shell .admin-columns {
+  display: grid;
+  grid-template-columns: minmax(320px, 420px) minmax(0, 1fr);
+  align-items: start;
+}
+
+.profile-shell .profile-form,
+.profile-shell .admin-panel {
+  width: 100%;
 }
 
 .profile-form .inline-actions {
@@ -1149,6 +1165,10 @@ img {
     flex-direction: column;
   }
 
+  .profile-shell .admin-columns {
+    grid-template-columns: 1fr;
+  }
+
   .admin-page {
     padding-inline: 16px;
   }
@@ -1226,6 +1246,10 @@ img {
 
   .admin-columns {
     gap: 16px;
+  }
+
+  .profile-shell .admin-columns {
+    grid-template-columns: 1fr;
   }
 
   .admin-list-card,
