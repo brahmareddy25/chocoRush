@@ -25,18 +25,23 @@ def load_env_file(path):
         os.environ.setdefault(key, value)
 
 
+def parse_csv_env(name, default=""):
+    return [item.strip() for item in os.environ.get(name, default).split(",") if item.strip()]
+
+
+def append_unique(values, candidate):
+    if candidate and candidate not in values:
+        values.append(candidate)
+
+
 load_env_file(BASE_DIR.parent / ".env")
 load_env_file(BASE_DIR / ".env")
 
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "local-dev-secret-key")
 DEBUG = os.environ.get("DJANGO_DEBUG", "1") == "1"
-ALLOWED_HOSTS = [
-    host.strip()
-    for host in os.environ.get("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
-    if host.strip()
-]
+ALLOWED_HOSTS = parse_csv_env("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost")
 if os.environ.get("RENDER_EXTERNAL_HOSTNAME"):
-    ALLOWED_HOSTS.append(os.environ["RENDER_EXTERNAL_HOSTNAME"])
+    append_unique(ALLOWED_HOSTS, os.environ["RENDER_EXTERNAL_HOSTNAME"])
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
@@ -129,18 +134,26 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 SESSION_COOKIE_NAME = "chocorush_sessionid"
 CSRF_COOKIE_NAME = "chocorush_csrftoken"
-CSRF_TRUSTED_ORIGINS = [
-    origin.strip()
-    for origin in os.environ.get(
-        "DJANGO_CSRF_TRUSTED_ORIGINS",
-        "http://127.0.0.1:5173,http://localhost:5173",
-    ).split(",")
-    if origin.strip()
-]
+CSRF_TRUSTED_ORIGINS = parse_csv_env(
+    "DJANGO_CSRF_TRUSTED_ORIGINS",
+    "http://127.0.0.1:5173,http://localhost:5173",
+)
 if os.environ.get("RENDER_EXTERNAL_URL"):
-    CSRF_TRUSTED_ORIGINS.append(os.environ["RENDER_EXTERNAL_URL"])
+    append_unique(CSRF_TRUSTED_ORIGINS, os.environ["RENDER_EXTERNAL_URL"])
 
-CORS_ALLOWED_ORIGINS = list(CSRF_TRUSTED_ORIGINS)
+cors_default = ",".join(CSRF_TRUSTED_ORIGINS)
+CORS_ALLOWED_ORIGINS = parse_csv_env("DJANGO_CORS_ALLOWED_ORIGINS", cors_default)
+
+render_frontend_url = os.environ.get("RENDER_FRONTEND_URL", "").strip()
+if render_frontend_url:
+    append_unique(CSRF_TRUSTED_ORIGINS, render_frontend_url)
+    append_unique(CORS_ALLOWED_ORIGINS, render_frontend_url)
+
+# Keep the paired ChocoRush Render deploy working even if the frontend URL
+# was not configured explicitly on the backend service yet.
+if os.environ.get("RENDER_EXTERNAL_HOSTNAME") == "chocorush-backend.onrender.com":
+    append_unique(CORS_ALLOWED_ORIGINS, "https://chocorush-frontend.onrender.com")
+
 CORS_ALLOW_CREDENTIALS = True
 
 SESSION_COOKIE_HTTPONLY = True

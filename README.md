@@ -27,6 +27,8 @@ backend/db.sqlite3    Local database after migrations
    - `SQLITE_PATH`
    - `DJANGO_ALLOWED_HOSTS`
    - `DJANGO_CSRF_TRUSTED_ORIGINS`
+   - `DJANGO_CORS_ALLOWED_ORIGINS`
+   - `RENDER_FRONTEND_URL`
    - `DJANGO_SECURE_SSL_REDIRECT`
    - `DJANGO_SECURE_HSTS_SECONDS`
    - `EMAIL_HOST`
@@ -55,13 +57,17 @@ The frontend API client reads `VITE_API_BASE_URL` from Vite env files.
 3. If your host supports env vars, set `VITE_API_BASE_URL=https://chocorush-backend.onrender.com`
 4. Publish the `dist/` folder, or let the host serve the Vite build output automatically
 5. In Render backend env vars, set `DJANGO_ALLOWED_HOSTS` to include your backend host
-6. In Render backend env vars, set `DJANGO_CSRF_TRUSTED_ORIGINS` to include your frontend URL, for example `https://your-frontend-domain.com`
-7. Redeploy the backend after updating trusted origins
+6. In Render backend env vars, set `RENDER_FRONTEND_URL=https://your-frontend-domain.com`
+7. Optionally set `DJANGO_CORS_ALLOWED_ORIGINS=https://your-frontend-domain.com` if you want explicit CORS control beyond the default
+8. If your frontend submits forms or authenticated requests to Django, also set `DJANGO_CSRF_TRUSTED_ORIGINS=https://your-frontend-domain.com`
+9. Redeploy the backend after updating origins
 
 ### Example
 
 - Backend URL: `https://chocorush-backend.onrender.com`
 - Frontend env: `VITE_API_BASE_URL=https://chocorush-backend.onrender.com`
+- Backend frontend URL: `RENDER_FRONTEND_URL=https://your-frontend-domain.com`
+- Backend CORS origin: `DJANGO_CORS_ALLOWED_ORIGINS=https://your-frontend-domain.com`
 - Backend trusted origin: `DJANGO_CSRF_TRUSTED_ORIGINS=https://your-frontend-domain.com`
 
 ### Local UI With Deployed Backend
