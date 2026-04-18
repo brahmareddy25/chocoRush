@@ -29,6 +29,8 @@ backend/db.sqlite3    Local database after migrations
    - `DJANGO_CSRF_TRUSTED_ORIGINS`
    - `DJANGO_CORS_ALLOWED_ORIGINS`
    - `DJANGO_CORS_ALLOW_HEADERS`
+   - `DJANGO_SESSION_COOKIE_SAMESITE`
+   - `DJANGO_CSRF_COOKIE_SAMESITE`
    - `RENDER_FRONTEND_URL`
    - `DJANGO_SECURE_SSL_REDIRECT`
    - `DJANGO_SECURE_HSTS_SECONDS`
@@ -66,7 +68,8 @@ The frontend API client reads `VITE_API_BASE_URL` from Vite env files.
 8. Optionally set `DJANGO_CORS_ALLOWED_ORIGINS=https://your-frontend-domain.com` if you want explicit CORS control beyond the default
 9. If your frontend sends custom headers such as `X-Admin-Session`, set `DJANGO_CORS_ALLOW_HEADERS=x-admin-session`
 10. If your frontend submits forms or authenticated requests to Django, also set `DJANGO_CSRF_TRUSTED_ORIGINS=https://your-frontend-domain.com`
-11. Redeploy the backend after updating origins
+11. For a separate frontend domain using session auth, set `DJANGO_SESSION_COOKIE_SAMESITE=None` and `DJANGO_CSRF_COOKIE_SAMESITE=None`
+12. Redeploy the backend after updating origins
 
 You can also codify the frontend rewrite in [render.yaml](/e:/choco%20web%20page/render.yaml:1) if you manage the site with a Render Blueprint.
 
@@ -78,6 +81,8 @@ You can also codify the frontend rewrite in [render.yaml](/e:/choco%20web%20page
 - Backend CORS origin: `DJANGO_CORS_ALLOWED_ORIGINS=https://your-frontend-domain.com`
 - Backend allowed headers: `DJANGO_CORS_ALLOW_HEADERS=x-admin-session`
 - Backend trusted origin: `DJANGO_CSRF_TRUSTED_ORIGINS=https://your-frontend-domain.com`
+- Backend session cookie policy: `DJANGO_SESSION_COOKIE_SAMESITE=None`
+- Backend CSRF cookie policy: `DJANGO_CSRF_COOKIE_SAMESITE=None`
 
 ### Local UI With Deployed Backend
 
