@@ -20,26 +20,25 @@ export default function App() {
   const navigate = useNavigate();
   const isAdminRoute = location.pathname.startsWith('/admin');
   const fallbackPath = isAdminRoute ? '/admin/login' : '/login';
+  const params = new URLSearchParams(location.search);
+  const redirectParam = params.get('redirect');
+  const storedRedirect =
+    typeof window !== 'undefined' ? window.sessionStorage.getItem('chocorush_redirect_path') : '';
+  const pendingRedirectPath =
+    location.pathname === '/' && (redirectParam || storedRedirect)?.startsWith('/')
+      ? redirectParam || storedRedirect
+      : '';
 
   useEffect(() => {
-    if (location.pathname !== '/') {
-      return;
-    }
-
-    const params = new URLSearchParams(location.search);
-    const redirectParam = params.get('redirect');
-    const storedRedirect = window.sessionStorage.getItem('chocorush_redirect_path');
-    const redirectPath = redirectParam || storedRedirect;
-
-    if (!redirectPath || !redirectPath.startsWith('/')) {
+    if (!pendingRedirectPath) {
       return;
     }
 
     window.sessionStorage.removeItem('chocorush_redirect_path');
-    navigate(redirectPath, { replace: true });
-  }, [location.pathname, location.search, navigate]);
+    navigate(pendingRedirectPath, { replace: true });
+  }, [navigate, pendingRedirectPath]);
 
-  if (booting) {
+  if (booting || pendingRedirectPath) {
     return (
       <main className="app-loader">
         <div className="loader-ring" />
