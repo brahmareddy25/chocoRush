@@ -18,7 +18,7 @@ class Product(models.Model):
     name = models.CharField(max_length=120)
     category = models.CharField(max_length=80, default="Chocolate")
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    image = models.URLField(max_length=500)
+    image = models.TextField()
     rating = models.DecimalField(max_digits=3, decimal_places=1, default=4.5)
     description = models.CharField(max_length=400, blank=True)
     is_active = models.BooleanField(default=True)

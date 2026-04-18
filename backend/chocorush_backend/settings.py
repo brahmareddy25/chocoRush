@@ -1,6 +1,11 @@
 from pathlib import Path
 import os
 
+try:
+    import dj_database_url
+except ImportError:  # Local environments may not have deployment DB extras installed yet.
+    dj_database_url = None
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -82,6 +87,12 @@ DATABASES = {
         "NAME": os.environ.get("SQLITE_PATH", str(BASE_DIR / "db.sqlite3")),
     }
 }
+if os.environ.get("DATABASE_URL") and dj_database_url is not None:
+    DATABASES["default"] = dj_database_url.parse(
+        os.environ["DATABASE_URL"],
+        conn_max_age=600,
+        ssl_require=not DEBUG,
+    )
 
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},

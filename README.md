@@ -6,7 +6,7 @@ ChocoRush now runs without Firebase. The frontend stays on React + Vite, and the
 
 - React 19 + Vite
 - Django 5
-- SQLite for local persistence
+- SQLite locally, PostgreSQL-ready for deployment with `DATABASE_URL`
 - Session-based user auth
 - Token-based admin auth for the existing admin UI flow
 
@@ -22,7 +22,9 @@ backend/db.sqlite3    Local database after migrations
 
 1. Install frontend packages: `npm install`
 2. Create a Python environment and install backend packages: `pip install -r backend/requirements.txt`
-3. Configure SMTP env vars in the project root `.env` if you want the backend to send real emails:
+3. Configure env vars in the project root `.env` if you want the backend to send real emails or switch databases:
+   - `DATABASE_URL`
+   - `SQLITE_PATH`
    - `DJANGO_ALLOWED_HOSTS`
    - `DJANGO_CSRF_TRUSTED_ORIGINS`
    - `DJANGO_SECURE_SSL_REDIRECT`
@@ -53,6 +55,11 @@ The backend now sends customer email notifications for:
 - order placed
 - expected delivery date updates
 - delivered orders
+
+## Product Images
+
+- Admin product add/edit now supports browsing and uploading an image file
+- Uploaded images are stored directly in the database as data URLs, so no separate media storage setup is required
 
 ## Security Notes
 

@@ -15,6 +15,15 @@ const defaultProduct = {
   description: ''
 };
 
+function fileToDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result || ''));
+    reader.onerror = () => reject(new Error('Could not read the selected image.'));
+    reader.readAsDataURL(file);
+  });
+}
+
 function toInputDate(value) {
   if (!value) return '';
   const date = value?.toDate ? value.toDate() : new Date(value);
@@ -82,6 +91,7 @@ export default function AdminDashboard() {
   const [productCategoryFilter, setProductCategoryFilter] = useState('All');
   const [productAvailabilityFilter, setProductAvailabilityFilter] = useState('All');
   const [productForm, setProductForm] = useState(defaultProduct);
+  const [productImageName, setProductImageName] = useState('');
   const [submittingProduct, setSubmittingProduct] = useState(false);
   const [savingOrderId, setSavingOrderId] = useState('');
 
@@ -157,6 +167,26 @@ export default function AdminDashboard() {
     }));
   }
 
+  async function setProductImage(event) {
+    const file = event.target.files?.[0];
+    if (!file) {
+      setProductImageName('');
+      return;
+    }
+
+    try {
+      const image = await fileToDataUrl(file);
+      setProductForm((current) => ({
+        ...current,
+        image
+      }));
+      setProductImageName(file.name);
+      setError('');
+    } catch (err) {
+      setError(err.message || 'Could not load the selected image.');
+    }
+  }
+
   async function saveProduct(event) {
     event.preventDefault();
     setSubmittingProduct(true);
@@ -175,6 +205,7 @@ export default function AdminDashboard() {
       setOrders(response.orders || []);
       setProducts(response.products || []);
       setProductForm(defaultProduct);
+      setProductImageName('');
     } catch (err) {
       setError(err.message || 'Could not save product.');
     } finally {
@@ -423,9 +454,15 @@ export default function AdminDashboard() {
                     <input name="price" onChange={setProductField} required type="number" value={productForm.price} />
                   </label>
                   <label>
-                    Image URL
-                    <input name="image" onChange={setProductField} required value={productForm.image} />
+                    Product image
+                    <input accept="image/*" onChange={setProductImage} required={!productForm.image} type="file" />
                   </label>
+                  {productImageName && <p className="password-hint">Selected image: {productImageName}</p>}
+                  {productForm.image && (
+                    <div className="product-image-preview">
+                      <img alt={productForm.name || 'Product preview'} src={productForm.image} />
+                    </div>
+                  )}
                   <label>
                     Rating
                     <input
@@ -461,7 +498,8 @@ export default function AdminDashboard() {
                         </span>
                         <button
                           className="ghost-btn admin-action-btn"
-                          onClick={() =>
+                          onClick={() => {
+                            setProductImageName('');
                             setProductForm({
                               id: product.id,
                               name: product.name,
@@ -471,8 +509,8 @@ export default function AdminDashboard() {
                               rating: String(product.rating || 4.5),
                               isActive: product.isActive !== false,
                               description: product.description || ''
-                            })
-                          }
+                            });
+                          }}
                           type="button"
                         >
                           Edit
