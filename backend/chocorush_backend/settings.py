@@ -81,10 +81,17 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "chocorush_backend.wsgi.application"
 
+default_sqlite_path = Path(os.environ.get("SQLITE_PATH", "")).expanduser() if os.environ.get("SQLITE_PATH") else None
+if default_sqlite_path is None:
+    # Render web services can always write to /tmp, but the app source directory may be read-only at runtime.
+    default_sqlite_path = Path("/tmp/chocorush.sqlite3") if os.environ.get("RENDER_EXTERNAL_HOSTNAME") else BASE_DIR / "db.sqlite3"
+
+default_sqlite_path.parent.mkdir(parents=True, exist_ok=True)
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.environ.get("SQLITE_PATH", str(BASE_DIR / "db.sqlite3")),
+        "NAME": str(default_sqlite_path),
     }
 }
 if os.environ.get("DATABASE_URL") and dj_database_url is not None:
