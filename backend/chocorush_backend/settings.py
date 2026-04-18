@@ -81,12 +81,24 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "chocorush_backend.wsgi.application"
 
-default_sqlite_path = Path(os.environ.get("SQLITE_PATH", "")).expanduser() if os.environ.get("SQLITE_PATH") else None
-if default_sqlite_path is None:
-    # Render web services can always write to /tmp, but the app source directory may be read-only at runtime.
-    default_sqlite_path = Path("/tmp/chocorush.sqlite3") if os.environ.get("RENDER_EXTERNAL_HOSTNAME") else BASE_DIR / "db.sqlite3"
+def get_default_sqlite_path():
+    sqlite_path = os.environ.get("SQLITE_PATH")
+    if sqlite_path:
+        configured_path = Path(sqlite_path).expanduser()
+        try:
+            configured_path.parent.mkdir(parents=True, exist_ok=True)
+            return configured_path
+        except PermissionError:
+            if not os.environ.get("RENDER_EXTERNAL_HOSTNAME"):
+                raise
 
-default_sqlite_path.parent.mkdir(parents=True, exist_ok=True)
+    # Render web services can always write to /tmp, but the app source directory may be read-only at runtime.
+    fallback_path = Path("/tmp/chocorush.sqlite3") if os.environ.get("RENDER_EXTERNAL_HOSTNAME") else BASE_DIR / "db.sqlite3"
+    fallback_path.parent.mkdir(parents=True, exist_ok=True)
+    return fallback_path
+
+
+default_sqlite_path = get_default_sqlite_path()
 
 DATABASES = {
     "default": {
