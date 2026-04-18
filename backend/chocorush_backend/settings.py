@@ -1,6 +1,8 @@
 from pathlib import Path
 import os
 
+from corsheaders.defaults import default_headers
+
 try:
     import dj_database_url
 except ImportError:  # Local environments may not have deployment DB extras installed yet.
@@ -153,6 +155,10 @@ if render_frontend_url:
 # was not configured explicitly on the backend service yet.
 if os.environ.get("RENDER_EXTERNAL_HOSTNAME") == "chocorush-backend.onrender.com":
     append_unique(CORS_ALLOWED_ORIGINS, "https://chocorush-frontend.onrender.com")
+
+CORS_ALLOW_HEADERS = list(default_headers)
+for header in parse_csv_env("DJANGO_CORS_ALLOW_HEADERS", "x-admin-session"):
+    append_unique(CORS_ALLOW_HEADERS, header)
 
 CORS_ALLOW_CREDENTIALS = True
 
