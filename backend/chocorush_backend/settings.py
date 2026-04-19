@@ -156,6 +156,11 @@ if render_frontend_url:
 if os.environ.get("RENDER_EXTERNAL_HOSTNAME") == "chocorush-backend.onrender.com":
     append_unique(CORS_ALLOWED_ORIGINS, "https://chocorush-frontend.onrender.com")
 
+cross_site_session_origin = any(
+    origin.startswith("https://") and "localhost" not in origin and "127.0.0.1" not in origin
+    for origin in CORS_ALLOWED_ORIGINS
+)
+
 CORS_ALLOW_HEADERS = list(default_headers)
 for header in parse_csv_env("DJANGO_CORS_ALLOW_HEADERS", "x-admin-session"):
     append_unique(CORS_ALLOW_HEADERS, header)
@@ -173,7 +178,7 @@ X_FRAME_OPTIONS = "DENY"
 if not DEBUG:
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
-    if render_frontend_url:
+    if cross_site_session_origin or os.environ.get("RENDER_EXTERNAL_HOSTNAME"):
         SESSION_COOKIE_SAMESITE = "None"
         CSRF_COOKIE_SAMESITE = "None"
     SECURE_SSL_REDIRECT = os.environ.get("DJANGO_SECURE_SSL_REDIRECT", "1") == "1"
