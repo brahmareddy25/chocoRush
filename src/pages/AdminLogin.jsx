@@ -39,7 +39,7 @@ export default function AdminLogin() {
     <main className="auth-page">
       <section className="auth-card">
         <p>Admin access</p>
-        <h1>Sign in to manage ChocoRush.</h1>
+        <h1>Sign in to manage NutBliss.</h1>
         <form onSubmit={submit}>
           <label>
             Username

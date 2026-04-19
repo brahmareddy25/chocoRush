@@ -85,15 +85,13 @@ img {
   gap: 10px;
 }
 
-.brand-mark {
-  display: grid;
-  width: 42px;
-  height: 42px;
-  place-items: center;
-  border-radius: 8px;
-  color: #fff;
-  background: linear-gradient(135deg, var(--accent), #0f9f8e);
-  font-weight: 900;
+.brand-logo {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 1px solid rgba(103, 55, 33, 0.14);
+  box-shadow: 0 8px 18px rgba(88, 43, 21, 0.14);
 }
 
 .brand small,

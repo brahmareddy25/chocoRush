@@ -16,10 +16,10 @@ export default function Header() {
   return (
     <header className="site-header">
       <Link className="brand" to="/">
-        <span className="brand-mark">C</span>
+        <img alt="NutBliss logo" className="brand-logo" src="/nutbliss-logo.jpeg" />
         <span>
-          <strong>ChocoRush</strong>
-          <small>Chocolate in minutes</small>
+          <strong>NutBliss</strong>
+          <small>Chocolates made with love</small>
         </span>
       </Link>
 

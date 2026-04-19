@@ -63,7 +63,7 @@ export default function Login() {
     <main className="auth-page">
       <section className="auth-card auth-card-wide">
         <p>Welcome back</p>
-        <h1>{mode === 'login' ? 'Login to keep your cart warm.' : 'Create your ChocoRush account.'}</h1>
+        <h1>{mode === 'login' ? 'Login to keep your cart warm.' : 'Create your NutBliss account.'}</h1>
         <form onSubmit={submit}>
           {mode === 'register' && (
             <>
