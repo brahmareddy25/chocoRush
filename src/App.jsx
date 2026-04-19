@@ -19,7 +19,7 @@ export default function App() {
   const location = useLocation();
   const navigate = useNavigate();
   const isAdminRoute = location.pathname.startsWith('/admin');
-  const fallbackPath = isAdminRoute ? '/admin/login' : '/login';
+  const fallbackPath = isAdminRoute ? '/admin/login' : '/';
   const params = new URLSearchParams(location.search);
   const redirectParam = params.get('redirect');
   const storedRedirect =
@@ -51,14 +51,7 @@ export default function App() {
     <>
       {!isAdminRoute && <Header />}
       <Routes>
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <Home />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route
           path="/profile"
